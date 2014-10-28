@@ -1,7 +1,7 @@
 {
   "name": "jsonfast",
   "description": "基于jsbison生成的JSON的快速解析器。",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/takumi4ichi/JSONFast",
   "author": {
     "name": "takumi4ichi",
