@@ -7,12 +7,24 @@
 <script src="../parser.js"></script>
 <script src="../fastjson.js"></script>
 <script>
-var str;
-for(var i=0,len=BASIC.length; i<len; i++){
-    str = JSON.stringify(BASIC[i]);
-    console.log(str, JSON.stringify(JSONFast.parse(str)), JSON.stringify(JSONFast.parse(str)) === str);
+
+for(var i=0; i<unittests.length; i++){
+    str = unittests[i];
+
+
+    start = +new Date;
+    var a = JSON.parse(str);
+    console.log('JSON:', +new Date - start);
+
+    start = +new Date;
+    var b = JSONFast.parse(str);
+    console.log('JSONFast:', +new Date - start);
+
+    console.log('正确性:', JSON.stringify(a) === JSON.stringify(b), '\t\t\t\t', b);
 
 }
+
+
 </script>
 </head>
 <body></body>
