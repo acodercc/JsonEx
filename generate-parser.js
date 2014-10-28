@@ -12,8 +12,6 @@ var bnfcfg = Generator.bnfParser.$$;
 bnfcfg.lex = Generator.lexParser.$$;
 bnfcfg.type = 'LR(1)';
 
-
-debugger
 var generator = new Generator(bnfcfg);
 
 var code = generator.generate();

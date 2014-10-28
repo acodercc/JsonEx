@@ -1,15 +1,15 @@
 {
-  "name": "jsonfast",
-  "description": "基于jsbison生成的JSON的快速解析器。",
-  "version": "0.1.3",
-  "homepage": "https://github.com/takumi4ichi/JSONFast",
+  "name": "jsonex",
+  "description": "Extended Json",
+  "version": "0.1.4",
+  "homepage": "https://github.com/takumi4ichi/JsonEx",
   "author": {
     "name": "takumi4ichi",
     "email": "takumi4ichi@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:takumi4ichi/jsonfast.git"
+    "url": "git@github.com:takumi4ichi/JsonEx.git"
   },
   "licenses": [
     {

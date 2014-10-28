@@ -1,7 +1,7 @@
 (function(global){
 
     var parser = fastparser;
-    var JSONFast = {
+    var JsonEx = {
         parse: function(str, isDebug){
             if(parser.parse(str, isDebug)){
                 return parser.$$;
@@ -13,7 +13,7 @@
         }
     };
 
-    global.JSONFast = JSONFast;
+    global.JsonEx = JsonEx;
 
 
 })(this);

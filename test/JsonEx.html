@@ -5,24 +5,18 @@
 <script src="../node_modules/lodash/dist/lodash.js"></script>
 <script src="./basic.js"></script>
 <script src="../parser.js"></script>
-<script src="../fastjson.js"></script>
+<script src="../jsonex.js"></script>
 <script src="./lib/douglas_json_parse.js"></script>
 <script>
 for(var i=0; i<unittests.length; i++){
     str = unittests[i];
 
+    var nativeJson = JSON.parse(str);
+    var exJson = JsonEx.parse(str);
+    var douglasJson = json_parse(str);
 
-    start = +new Date;
-    var a = JSON.parse(str);
-    console.log('Native:', +new Date - start);
-
-    start = +new Date;
-    var b = JSONFast.parse(str);
-    console.log('JSONFast:', +new Date - start);
-
-    start = +new Date;
-    var c = json_parse(str);
-    console.log('douglas:', +new Date - start);
+    console.log( JSON.stringify(nativeJson) === JSON.stringify(exJson) 
+            && JSON.stringify(exJson) === JSON.stringify(douglasJson) , exJson);
 
 }
 
