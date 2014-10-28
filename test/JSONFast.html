@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script src="../node_modules/lodash/dist/lodash.js"></script>
+<script src="./basic.js"></script>
+<script src="../parser.js"></script>
+<script src="../fastjson.js"></script>
+<script>
+var str;
+for(var i=0,len=BASIC.length; i<len; i++){
+    str = JSON.stringify(BASIC[i]);
+    console.log(str, JSON.stringify(JSONFast.parse(str)), JSON.stringify(JSONFast.parse(str)) === str);
+
+}
+</script>
+</head>
+<body></body>
+</html>
