@@ -6,9 +6,8 @@
 <script src="./basic.js"></script>
 <script src="../parser.js"></script>
 <script src="../fastjson.js"></script>
-<script src="./lib/jquery.js"></script>
+<script src="./lib/douglas_json_parse.js"></script>
 <script>
-
 for(var i=0; i<unittests.length; i++){
     str = unittests[i];
 
@@ -22,10 +21,8 @@ for(var i=0; i<unittests.length; i++){
     console.log('JSONFast:', +new Date - start);
 
     start = +new Date;
-    var c = $.parseJSON(str);
-    console.log('jQuery:', +new Date - start);
-
-
+    var c = json_parse(str);
+    console.log('douglas:', +new Date - start);
 
 }
 

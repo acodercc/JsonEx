@@ -2,8 +2,8 @@
 
     var parser = fastparser;
     var JSONFast = {
-        parse: function(str){
-            if(parser.parse(str)){
+        parse: function(str, isDebug){
+            if(parser.parse(str, isDebug)){
                 return parser.$$;
             }else{
                 return {};
