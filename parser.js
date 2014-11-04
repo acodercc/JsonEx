@@ -88,33 +88,47 @@ getToken_:function (isDebug){
                 //这个断点的原因是，这是编写lex文法时常见的错误，就是自动机陷入一个没有任何规则激活的状态中了
             }
 
+            var possibleInputs = [],
+            maxLength = 0;
+
             for(var i=0,len=activeRules.length; i<len; i++){
                 regex = activeRules[i].regex;
 
                 if(matches = input.match(activeRules[i].regex)){
-                    if(self._more){
-                        self.yytext += matches[0];
-                    }else{
-                        self.yytext = matches[0];
-                    }
-                    self.position += matches[0].length;
-                    self.yyleng = self.yytext.length;
-                    self._more = false;
-                    return (new Function(activeRules[i].action)).call(self);
+                    possibleInputs.push({rule:activeRules[i], match: matches[0]});
+                    maxLength = maxLength > matches[0].length ? maxLength : matches[0].length;
                 }
             }
+
+            if(possibleInputs.length){
+                possibleInputs = _.filter(possibleInputs, function(possible){
+                    return possible.match.length === maxLength;
+                });
+
+                if(self._more){
+                    self.yytext += possibleInputs[0].match;
+                }else{
+                    self.yytext = possibleInputs[0].match;
+                }
+                self.position += possibleInputs[0].match.length;
+                self.yyleng = self.yytext.length;
+                self._more = false;
+                return (new Function(possibleInputs[0].rule.action)).call(self);
+            }
+
             if(isDebug){
                 debugger
                 //这个断点的原因是，没有在循环体中return 说明当前输入已经无法命中任何规则，自动机将陷入死循环
             }
+            throw('invalid input: ' + input);
         },
 reset:function (){
             this.setInput(this.input);
         }
 };
 })(),
-lrtable: {"actions":{"0":{"NULL":["shift",3],"STRING":["shift",5],"NUMBER":["shift",6],"TRUE":["shift",9],"FALSE":["shift",10],"{":["shift",11],"[":["shift",12]},"1":{"$end":["shift",13]},"2":{"$end":["shift",14]},"3":{"$end":["reduce",2]},"4":{"$end":["reduce",3]},"5":{"$end":["reduce",4]},"6":{"$end":["reduce",5]},"7":{"$end":["reduce",6]},"8":{"$end":["reduce",7]},"9":{"$end":["reduce",8]},"10":{"$end":["reduce",9]},"11":{"}":["shift",15],"STRING":["shift",18]},"12":{"]":["shift",19],"NULL":["shift",22],"STRING":["shift",24],"NUMBER":["shift",25],"TRUE":["shift",28],"FALSE":["shift",29],"{":["shift",30],"[":["shift",31]},"13":{"$end":["accept",0]},"14":{"$end":["reduce",1]},"15":{"$end":["reduce",10]},"16":{"}":["shift",32],",":["shift",33]},"17":{",":["reduce",13],"}":["reduce",13]},"18":{":":["shift",34]},"19":{"$end":["reduce",15]},"20":{"]":["shift",35],",":["shift",36]},"21":{",":["reduce",18],"]":["reduce",18]},"22":{",":["reduce",2],"]":["reduce",2]},"23":{",":["reduce",3],"]":["reduce",3]},"24":{",":["reduce",4],"]":["reduce",4]},"25":{",":["reduce",5],"]":["reduce",5]},"26":{",":["reduce",6],"]":["reduce",6]},"27":{",":["reduce",7],"]":["reduce",7]},"28":{",":["reduce",8],"]":["reduce",8]},"29":{",":["reduce",9],"]":["reduce",9]},"30":{"}":["shift",37],"STRING":["shift",18]},"31":{"]":["shift",39],"NULL":["shift",22],"STRING":["shift",24],"NUMBER":["shift",25],"TRUE":["shift",28],"FALSE":["shift",29],"{":["shift",30],"[":["shift",31]},"32":{"$end":["reduce",11]},"33":{"STRING":["shift",18]},"34":{"NULL":["shift",43],"STRING":["shift",45],"NUMBER":["shift",46],"TRUE":["shift",49],"FALSE":["shift",50],"{":["shift",51],"[":["shift",52]},"35":{"$end":["reduce",16]},"36":{"NULL":["shift",22],"STRING":["shift",24],"NUMBER":["shift",25],"TRUE":["shift",28],"FALSE":["shift",29],"{":["shift",30],"[":["shift",31]},"37":{",":["reduce",10],"]":["reduce",10]},"38":{"}":["shift",54],",":["shift",33]},"39":{",":["reduce",15],"]":["reduce",15]},"40":{"]":["shift",55],",":["shift",36]},"41":{",":["reduce",12],"}":["reduce",12]},"42":{",":["reduce",14],"}":["reduce",14]},"43":{",":["reduce",2],"}":["reduce",2]},"44":{",":["reduce",3],"}":["reduce",3]},"45":{",":["reduce",4],"}":["reduce",4]},"46":{",":["reduce",5],"}":["reduce",5]},"47":{",":["reduce",6],"}":["reduce",6]},"48":{",":["reduce",7],"}":["reduce",7]},"49":{",":["reduce",8],"}":["reduce",8]},"50":{",":["reduce",9],"}":["reduce",9]},"51":{"}":["shift",56],"STRING":["shift",18]},"52":{"]":["shift",58],"NULL":["shift",22],"STRING":["shift",24],"NUMBER":["shift",25],"TRUE":["shift",28],"FALSE":["shift",29],"{":["shift",30],"[":["shift",31]},"53":{",":["reduce",17],"]":["reduce",17]},"54":{",":["reduce",11],"]":["reduce",11]},"55":{",":["reduce",16],"]":["reduce",16]},"56":{",":["reduce",10],"}":["reduce",10]},"57":{"}":["shift",60],",":["shift",33]},"58":{",":["reduce",15],"}":["reduce",15]},"59":{"]":["shift",61],",":["shift",36]},"60":{",":["reduce",11],"}":["reduce",11]},"61":{",":["reduce",16],"}":["reduce",16]}},"gotos":{"0":{"Json":1,"JsonValue":2,"BooleanLiteral":4,"JSONObject":7,"JSONArray":8},"11":{"JSONMemberList":16,"JSONMember":17},"12":{"JSONElementList":20,"JsonValue":21,"BooleanLiteral":23,"JSONObject":26,"JSONArray":27},"30":{"JSONMemberList":38,"JSONMember":17},"31":{"JSONElementList":40,"JsonValue":21,"BooleanLiteral":23,"JSONObject":26,"JSONArray":27},"33":{"JSONMember":41},"34":{"JsonValue":42,"BooleanLiteral":44,"JSONObject":47,"JSONArray":48},"36":{"JsonValue":53,"BooleanLiteral":23,"JSONObject":26,"JSONArray":27},"51":{"JSONMemberList":57,"JSONMember":17},"52":{"JSONElementList":59,"JsonValue":21,"BooleanLiteral":23,"JSONObject":26,"JSONArray":27}}},
-productions: [{"symbol":"$accept","nullable":false,"firsts":["NULL","TRUE","FALSE","STRING","NUMBER","{","["],"rhs":["Json","$end"],"srhs":"Json $end","id":0,"actionCode":"this.$$ = $1;"},{"symbol":"Json","nullable":false,"firsts":["NULL","TRUE","FALSE","STRING","NUMBER","{","["],"rhs":["JsonValue","$end"],"srhs":"JsonValue $end","id":1,"actionCode":"\n            this.$$ = $1;\n        "},{"symbol":"JsonValue","nullable":false,"firsts":["NULL"],"rhs":["NULL"],"srhs":"NULL","id":2,"actionCode":"\n            this.$$ = null;\n        "},{"symbol":"JsonValue","nullable":false,"firsts":["TRUE","FALSE"],"rhs":["BooleanLiteral"],"srhs":"BooleanLiteral","id":3,"actionCode":"\n            this.$$ = $1;\n        "},{"symbol":"JsonValue","nullable":false,"firsts":["STRING"],"rhs":["STRING"],"srhs":"STRING","id":4,"actionCode":"\n            this.$$ = $1;\n        "},{"symbol":"JsonValue","nullable":false,"firsts":["NUMBER"],"rhs":["NUMBER"],"srhs":"NUMBER","id":5,"actionCode":"\n            this.$$ = parseFloat($1);\n        "},{"symbol":"JsonValue","nullable":false,"firsts":["{"],"rhs":["JSONObject"],"srhs":"JSONObject","id":6,"actionCode":"\n            this.$$ = $1;\n        "},{"symbol":"JsonValue","nullable":false,"firsts":["["],"rhs":["JSONArray"],"srhs":"JSONArray","id":7,"actionCode":"\n            this.$$ = $1;\n        "},{"symbol":"BooleanLiteral","nullable":false,"firsts":["TRUE"],"rhs":["TRUE"],"srhs":"TRUE","id":8,"actionCode":"\n            this.$$ = true;\n        "},{"symbol":"BooleanLiteral","nullable":false,"firsts":["FALSE"],"rhs":["FALSE"],"srhs":"FALSE","id":9,"actionCode":"\n            this.$$ = false;\n        "},{"symbol":"JSONObject","nullable":false,"firsts":["{"],"rhs":["{","}"],"srhs":"{ }","id":10,"actionCode":"\n            this.$$ = {};\n        "},{"symbol":"JSONObject","nullable":false,"firsts":["{"],"rhs":["{","JSONMemberList","}"],"srhs":"{ JSONMemberList }","id":11,"actionCode":"\n            this.$$ = $2;\n        "},{"symbol":"JSONMemberList","nullable":false,"firsts":["STRING"],"rhs":["JSONMemberList",",","JSONMember"],"srhs":"JSONMemberList , JSONMember","id":12,"actionCode":"\n            this.$$ = $1;\n            this.$$ = _.merge(this.$$, $3);\n        "},{"symbol":"JSONMemberList","nullable":false,"firsts":["STRING"],"rhs":["JSONMember"],"srhs":"JSONMember","id":13,"actionCode":"\n            this.$$ = $1;\n        "},{"symbol":"JSONMember","nullable":false,"firsts":["STRING"],"rhs":["STRING",":","JsonValue"],"srhs":"STRING : JsonValue","id":14,"actionCode":"\n            this.$$ = {};\n            this.$$[$1] = $3;\n        "},{"symbol":"JSONArray","nullable":false,"firsts":["["],"rhs":["[","]"],"srhs":"[ ]","id":15,"actionCode":"\n            this.$$ = [];\n        "},{"symbol":"JSONArray","nullable":false,"firsts":["["],"rhs":["[","JSONElementList","]"],"srhs":"[ JSONElementList ]","id":16,"actionCode":"\n            this.$$ = $2;\n        "},{"symbol":"JSONElementList","nullable":false,"firsts":["NULL","STRING","NUMBER","TRUE","FALSE","{","["],"rhs":["JSONElementList",",","JsonValue"],"srhs":"JSONElementList , JsonValue","id":17,"actionCode":"\n            this.$$ = $1;\n            this.$$.push($3);\n        "},{"symbol":"JSONElementList","nullable":false,"firsts":["NULL","TRUE","FALSE","STRING","NUMBER","{","["],"rhs":["JsonValue"],"srhs":"JsonValue","id":18,"actionCode":"\n            this.$$ = [$1];\n        "}],
+lrtable: {"actions":{"0":{"$end":["accept",0]}},"gotos":{"0":{}}},
+productions: [{"symbol":"$accept","nullable":false,"firsts":[],"rhs":[null,"$end"],"srhs":" $end","id":0,"actionCode":"this.$$ = $1;"}],
 parse:function (input, isDebug){
             var self = this,
 
@@ -153,12 +167,12 @@ parse:function (input, isDebug){
                     }else if(action[0] === 'reduce'){
                         var production = self.productions[action[1]];
 
-                        var runstr = ('this.$$ = $1;'+production.actionCode)
+                        var reduceCode = ('/*' + production.symbol + ' -> ' + production.srhs + ';*/ this.$$ = $1;'+production.actionCode)
                             .replace(/\$(\d+)/g, function(_, n){
                                 return 'valueStack[' + (valueStack.length - production.rhs.length + parseInt(n, 10) - 1) + ']'
                             });
 
-                        eval(runstr);
+                        eval(reduceCode);
 
 
                         if(isDebug){
@@ -207,9 +221,6 @@ parse:function (input, isDebug){
         }
 };
 if(typeof module == "object"){module.exports = parser}
-
-
-global.fastparser = parser;
 
 return parser;
 })(this);

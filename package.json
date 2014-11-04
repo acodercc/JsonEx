@@ -1,7 +1,7 @@
 {
   "name": "jsonex",
   "description": "Extended Json",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/takumi4ichi/JsonEx",
   "author": {
     "name": "takumi4ichi",
@@ -27,7 +27,7 @@
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.4.0",
     "grunt-contrib-jshint": "~0.10.0",
-    "jsbison": "~0.1.8"
+    "jsbison": "~0.3.1"
   },
   "dependencies": {
     "lodash": "^2.4.1"

@@ -1,6 +1,6 @@
 (function(global){
 
-    var parser = fastparser;
+    var parser = jsonparser;
     var JsonEx = {
         parse: function(str, isDebug){
             if(parser.parse(str, isDebug)){

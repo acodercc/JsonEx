@@ -102,4 +102,4 @@ JSONElementList:
 
 %%
 
-global.fastparser = parser;
+global.jsonparser = parser;
